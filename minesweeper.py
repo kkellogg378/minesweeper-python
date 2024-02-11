@@ -30,21 +30,39 @@ bomb = tk.PhotoImage(file = './assets/bomb.png')
 bomb_red = tk.PhotoImage(file = './assets/bomb_red.png')
 flag = tk.PhotoImage(file = './assets/flag.png')
 
+isGameOver = False
+# Function for when the game ends
+def endGame(i, j):
+    global isShowBombsEnabled, isGameOver
+    isShowBombsEnabled = False
+    debugShowBombs()
+    grid[i][j].config(image = bomb_red)
+    isGameOver = True
+    debugButton.destroy()
+    # Make sure to destroy any other debug buttons
+    return
+
 # Function for left-clicking a button
 def left(i, j):
-    if (locked[i][j] == True): # check if square is locked
+    if (isGameOver == True or locked[i][j] == True): # check if game is over or if square is locked
         return
-    print('clicked left', i, j) # debug
+    if (isBomb[i][j] == True):
+        endGame(i, j)
+        return
+    grid[i][j].config(relief = 'flat')
+    #print('clicked left', i, j) # debug
 
 # Function for right-clicking a button
 def right(i, j):
+    if (isGameOver == True or grid[i][j]["relief"] == 'flat'):
+        return
     if (locked[i][j] == True):
         grid[i][j].config(image = empty)
         locked[i][j] = False
     else:
         grid[i][j].config(image = flag)
         locked[i][j] = True
-    print('locked', i, j) # debug
+    #print('locked', i, j) # debug
 
 # Function for board generation
 def generate_board(h, w, m):
@@ -70,7 +88,7 @@ def generate_board(h, w, m):
         for j in range(0, width):
             grid[i][j] = tk.Button(window, image = empty, width = 15, height = 15, command = None)
             grid[i][j].grid(column = j, row = i)
-            grid[i][j].bind('<Button-1>', lambda k=k, i=i, j=j: left(i, j))
+            grid[i][j].bind('<ButtonRelease-1>', lambda k=k, i=i, j=j: left(i, j))
             grid[i][j].bind('<Button-3>', lambda k=k, i=i, j=j: right(i, j))
     
     isBomb = [[False]*width for _ in range(height)]
