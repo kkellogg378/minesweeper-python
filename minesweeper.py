@@ -2,6 +2,7 @@
 
 import tkinter as tk
 import random
+from base64 import b64decode
 
 # Flags
 debug_mode = True
@@ -19,19 +20,19 @@ window['padx'] = 10
 window['pady'] = 10
 #window.maxsize(500, 500)
 
-# Define images
+# Define images (encoded with https://www.base64-image.de/)
 empty = tk.PhotoImage(width = 1, height = 1)
-safe1 = tk.PhotoImage(file = './assets/1.png')
-safe2 = tk.PhotoImage(file = './assets/2.png')
-safe3 = tk.PhotoImage(file = './assets/3.png')
-safe4 = tk.PhotoImage(file = './assets/4.png')
-safe5 = tk.PhotoImage(file = './assets/5.png')
-safe6 = tk.PhotoImage(file = './assets/6.png')
-safe7 = tk.PhotoImage(file = './assets/7.png')
-safe8 = tk.PhotoImage(file = './assets/8.png')
-bomb = tk.PhotoImage(file = './assets/bomb.png')
-bomb_red = tk.PhotoImage(file = './assets/bomb_red.png')
-flag = tk.PhotoImage(file = './assets/flag.png')
+safe1 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAEhJREFUOE9jZKAAMFKgl4GA5v//IYYzYlWHRzNMI8makTWSpBldI0maYUFItrNBBgwxzdgCDBYOqPGNJZ4p0kx8gqVl2sbvCgCtJRQQZgBfgwAAAABJRU5ErkJggg=="))
+safe2 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAF9JREFUOE+1klEOwCAIQ8vNvflMljkZqykL01/zWlowFJ4VWDzhhkOKtclMOAMO5UuAw079nsSLv2A172eYRaGZvfMqf4iTa5t1ALhViRFZJRtWpZs/TX88T+UY/kvOHY2MFhDiFMvZAAAAAElFTkSuQmCC"))
+safe3 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAFRJREFUOE9jZKAAMFKglwGu+T8Dw39CBjEyINSD1JKkGaoBrocoZyO7Ctl26mvG5X+cfkYOLIo0o4c6bf1MTDzjjCpiNBMVYIRSGkyeqHjGZRhFmgHAdRQQiyS3RgAAAABJRU5ErkJggg=="))
+safe4 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAEdJREFUOE9jZKAAMFKglwGL5ob/CAMbgPLofIQsNTVjs4Vom8nWjKwRXzCCwgECkPxMkWZcthHtZ2wGDFHNuEOe2mmb+KwCAC7AHBCUCtM7AAAAAElFTkSuQmCC"))
+safe5 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAEpJREFUOE9jZKAAMFKglwGuuYGB4T8xBjUwIPRQXzOy6fhcg9VmijTjsg3dUOr4GZ/fkGMCa2hTpJnm8YwzwIhJXehqqJO2ybEZANVNFBCzlBrwAAAAAElFTkSuQmCC"))
+safe6 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAE9JREFUOE9jZKAAMFKglwFVc0PDf7yGNTSgqEdwCGkEmUqUZjRFuFyD3WaKNOOyiihn4ws1JAOIczZyYNJWM8nOhsQjmYmEjHRKxbRNou0AxOkkEEjhQL4AAAAASUVORK5CYII="))
+safe7 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAEZJREFUOE9jZKAAMFKglwFZ838iDYLroZpmfBYjuwqrzTTRjNVWkE3EhDbZmnFqJMZmsjXj1UjIZoo0E0xwxIQ2TkMo0gwAOZgKEFKsVmoAAAAASUVORK5CYII="))
+safe8 = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAFFJREFUOE9jZKAAMFKglwFFc0NDw398hjU0NKCoh3MIaYQZimwAVs3oNiAbTH3NIGcRcjpOP1OkGZe/0A2lvp8J+RdvVFHkZ3KSKfXSNqm2AwB9QDgQM4mjgQAAAABJRU5ErkJggg=="))
+bomb = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAGFJREFUOE9jZKAAMBLQ+5+BgQGnGqpqhtkEotEByCIUl2CzGZtGmEEo6tE1gzX+/w/Rz8iI1VdwQapoxudUXBGC4S5iDMHvbAJxj1MzOLzwaCYY2rD4JCuekTXRL3mSlMcA+jwXEI8MpjUAAAAASUVORK5CYII="))
+bomb_red = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAGhJREFUOE9jfCuj8p+BTMCIT7PwkzsMb2VUcBpNPc0wm0A0OgC5AN0lGDZj0wgzCN0LKJphGv//h4QhIyMjVhfABCnXjM+puIIa5AWsNuOLdmR/U08zyEaKQhsWn2TFM7Im+iVPUjMXAEKeWaS+0+s1AAAAAElFTkSuQmCC"))
+flag = tk.PhotoImage(data = b64decode("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAFNJREFUOE9jZKAAMFKglwGn5v8MDP9BBjOCEXaAIQHTBFNOtGZ0jfSzGdlnZPkZLWhAgUZ8gFFDMziakABW29EF0TWhRzCKeqpqJim10iZtE+MEADQrDxCxpPdTAAAAAElFTkSuQmCC"))
 
 #############
 # Functions #
@@ -173,6 +174,10 @@ def generateBombsOnClick(i, j):
 def showBombs():
     # Define global variables
     global isShowBombsEnabled
+    
+    # Check whether bombs need generated still
+    if (needGenerateBombs == True):
+        return
     
     # Check whether bombs are already being shown
     if (isShowBombsEnabled == True):
