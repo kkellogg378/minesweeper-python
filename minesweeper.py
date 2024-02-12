@@ -7,6 +7,7 @@ import random
 debug_mode = True
 isGameOver = False
 isShowBombsEnabled = False
+needGenerateBombs = True
 
 # Define tkinter window
 window = tk.Tk()
@@ -46,7 +47,7 @@ def endGame(i, j):
     isShowBombsEnabled = False
     
     # Show bomb locations
-    ShowBombs()
+    showBombs()
     
     # Mark the bomb the user clicked with red
     grid[i][j].config(image = bomb_red)
@@ -62,9 +63,17 @@ def endGame(i, j):
 
 # Function for left-clicking a button
 def left(i, j):
+    # Define global variables
+    global needGenerateBombs
+    
     # Check whether the game is over or if the square is locked
     if (isGameOver == True or locked[i][j] == True): 
         return
+    
+    # Check whether bombs need generated
+    if (needGenerateBombs == True):
+        generateBombsOnClick(i, j)
+        needGenerateBombs = False
     
     # Check whether the square hides a bomb
     if (isBomb[i][j] == True):
@@ -102,10 +111,10 @@ def right(i, j):
     
     return
 
-# Function for generating a new game
-def generate_board(h, w, m):
+# Function for generating the board
+def generateBoard(h, w):
     # Define global variables
-    global height, width, grid, locked, isBomb
+    global height, width, grid, locked
     
     # TODO: implement difficulty selection button/label removal
     
@@ -129,21 +138,39 @@ def generate_board(h, w, m):
             grid[i][j].bind('<ButtonRelease-1>', lambda k=k, i=i, j=j: left(i, j))
             grid[i][j].bind('<Button-3>', lambda k=k, i=i, j=j: right(i, j))
     
+    return
+
+# Function for generating bombs on the first click
+def generateBombsOnClick(i, j):
+    # Define global variables
+    global isBomb, numBombs
+    
     # Generate bomb locations
     isBomb = [[False]*width for _ in range(height)]
-    for _ in range(0, m):
+    for _ in range(0, numBombs):
         while True:
             bombi = random.randint(0, height - 1)
             bombj = random.randint(0, width - 1)
+            
+            # Check if this location already has a bomb
             if (isBomb[bombi][bombj] == True):
                 continue
+            
+            # Check if this is where the user clicked
+            if (bombi == i and bombj == j):
+                continue
+            
             isBomb[bombi][bombj] = True
             break
+    
+    # Debug output
+    if (debug_mode == True):
+        print('Generated Bombs!')
     
     return
 
 # Function for showing bomb locations
-def ShowBombs():
+def showBombs():
     # Define global variables
     global isShowBombsEnabled
     
@@ -176,10 +203,11 @@ def ShowBombs():
 
 # TODO: implement difficulty selection
 
-generate_board(15, 15, 20)
+generateBoard(15, 15)
+numBombs = 30
 
 # This can only be enabled after board generation because the 'width' and 'height' variables need to be defined
-debugButton = tk.Button(window, text = "show bombs", command = lambda: ShowBombs())
+debugButton = tk.Button(window, text = "show bombs", command = lambda: showBombs())
 debugButton.grid(column = width, row = 0, rowspan = 2)
 if (debug_mode == False):
     debugButton.destroy()
