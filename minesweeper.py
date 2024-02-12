@@ -3,8 +3,10 @@
 import tkinter as tk
 import random
 
-# Debug Mode
+# Flags
 debug_mode = True
+isGameOver = False
+isShowBombsEnabled = False
 
 # Define tkinter window
 window = tk.Tk()
@@ -30,7 +32,10 @@ bomb = tk.PhotoImage(file = './assets/bomb.png')
 bomb_red = tk.PhotoImage(file = './assets/bomb_red.png')
 flag = tk.PhotoImage(file = './assets/flag.png')
 
-isGameOver = False
+#############
+# Functions #
+#############
+
 # Function for when the game ends
 def endGame(i, j):
     global isShowBombsEnabled, isGameOver
@@ -64,7 +69,7 @@ def right(i, j):
         locked[i][j] = True
     #print('locked', i, j) # debug
 
-# Function for board generation
+# Function for generating a new game
 def generate_board(h, w, m):
     # Define global variables
     global height, width, grid, locked, isBomb
@@ -103,9 +108,8 @@ def generate_board(h, w, m):
     
     return
 
-isShowBombsEnabled = False
-# Debug function for showing bomb locations
-def debugShowBombs():
+# Function for showing bomb locations
+def ShowBombs():
     global isShowBombsEnabled
     
     if (isShowBombsEnabled == True):
@@ -128,14 +132,16 @@ def debugShowBombs():
     
     return
 
-# Main Function
+########
+# Main #
+########
 
 # TODO: implement difficulty selection
 
 generate_board(15, 15, 20)
 
 # This can only be enabled after board generation because the 'width' and 'height' variables need to be defined
-debugButton = tk.Button(window, text = "show bombs", command = lambda: debugShowBombs())
+debugButton = tk.Button(window, text = "show bombs", command = lambda: ShowBombs())
 debugButton.grid(column = width, row = height)
 if (debug_mode == False):
     debugButton.destroy()
