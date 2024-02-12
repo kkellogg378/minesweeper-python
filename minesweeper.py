@@ -53,6 +53,11 @@ def endGame(i, j):
     
     # Destroy any debug buttons 
     debugButton.destroy()
+    
+    # Debug output
+    if (debug_mode == True):
+        print('Game over! Bomb at', i, j)
+    
     return
 
 # Function for left-clicking a button
@@ -72,6 +77,8 @@ def left(i, j):
     # Debug output
     if (debug_mode == True):
         print('clicked left', i, j)
+    
+    return
 
 # Function for right-clicking a button
 def right(i, j):
@@ -173,7 +180,7 @@ generate_board(15, 15, 20)
 
 # This can only be enabled after board generation because the 'width' and 'height' variables need to be defined
 debugButton = tk.Button(window, text = "show bombs", command = lambda: ShowBombs())
-debugButton.grid(column = width, row = height)
+debugButton.grid(column = width, row = 0, rowspan = 2)
 if (debug_mode == False):
     debugButton.destroy()
 
