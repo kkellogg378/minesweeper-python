@@ -38,36 +38,62 @@ flag = tk.PhotoImage(file = './assets/flag.png')
 
 # Function for when the game ends
 def endGame(i, j):
+    # Define global variables
     global isShowBombsEnabled, isGameOver
-    isShowBombsEnabled = False
-    debugShowBombs()
-    grid[i][j].config(image = bomb_red)
+    
+    # Update flags
     isGameOver = True
+    isShowBombsEnabled = False
+    
+    # Show bomb locations
+    ShowBombs()
+    
+    # Mark the bomb the user clicked with red
+    grid[i][j].config(image = bomb_red)
+    
+    # Destroy any debug buttons 
     debugButton.destroy()
-    # Make sure to destroy any other debug buttons
     return
 
 # Function for left-clicking a button
 def left(i, j):
-    if (isGameOver == True or locked[i][j] == True): # check if game is over or if square is locked
+    # Check whether the game is over or if the square is locked
+    if (isGameOver == True or locked[i][j] == True): 
         return
+    
+    # Check whether the square hides a bomb
     if (isBomb[i][j] == True):
         endGame(i, j)
         return
+    
+    # Lock button in flat state
     grid[i][j].config(relief = 'flat')
-    #print('clicked left', i, j) # debug
+    
+    # Debug output
+    if (debug_mode == True):
+        print('clicked left', i, j)
 
 # Function for right-clicking a button
 def right(i, j):
+    # Check whether the game is over or if the square has already been clicked
     if (isGameOver == True or grid[i][j]["relief"] == 'flat'):
         return
+    
+    # Check whether there is already a flag there
     if (locked[i][j] == True):
         grid[i][j].config(image = empty)
         locked[i][j] = False
+        # Debug output
+        if (debug_mode == True):
+            print('unlocked', i, j)
     else:
         grid[i][j].config(image = flag)
         locked[i][j] = True
-    #print('locked', i, j) # debug
+        # Debug output
+        if (debug_mode == True):
+            print('locked', i, j)
+    
+    return
 
 # Function for generating a new game
 def generate_board(h, w, m):
@@ -76,7 +102,7 @@ def generate_board(h, w, m):
     
     # TODO: implement difficulty selection button/label removal
     
-    # Define board grid
+    # Define variables
     height = h # i'th row
     width = w  # j'th column
     grid = [[0]*width for _ in range(height)]
@@ -96,6 +122,7 @@ def generate_board(h, w, m):
             grid[i][j].bind('<ButtonRelease-1>', lambda k=k, i=i, j=j: left(i, j))
             grid[i][j].bind('<Button-3>', lambda k=k, i=i, j=j: right(i, j))
     
+    # Generate bomb locations
     isBomb = [[False]*width for _ in range(height)]
     for _ in range(0, m):
         while True:
@@ -110,8 +137,10 @@ def generate_board(h, w, m):
 
 # Function for showing bomb locations
 def ShowBombs():
+    # Define global variables
     global isShowBombsEnabled
     
+    # Check whether bombs are already being shown
     if (isShowBombsEnabled == True):
         debugButton.config(text = "show bombs")
         isShowBombsEnabled = False
@@ -119,12 +148,14 @@ def ShowBombs():
         debugButton.config(text = "hide bombs")
         isShowBombsEnabled = True
     
+    # Show or hide bombs
     for i in range(0, height):
         for j in range(0, width):
             if (isBomb[i][j] == True):
                 if (isShowBombsEnabled == True):
                     grid[i][j].config(image = bomb)
                 else:
+                    # Check whether the square holds a flag
                     if (locked[i][j] == True):
                         grid[i][j].config(image = flag)
                     else:
