@@ -143,7 +143,7 @@ def generateBoard(h, w):
 # Function for generating bombs on the first click
 def generateBombsOnClick(i, j):
     # Define global variables
-    global isBomb, numBombs
+    global isBomb
     
     # Generate bomb locations
     isBomb = [[False]*width for _ in range(height)]
